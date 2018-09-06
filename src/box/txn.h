@@ -382,6 +382,14 @@ API_EXPORT int
 box_txn_commit(void);
 
 /**
+ * Check if transaction opened in the current fiber.
+ * @retval true Transaction is opened.
+ * @retval false Transaction is closed.
+ */
+API_EXPORT bool
+box_is_in_txn(void);
+
+/**
  * Rollback the current transaction.
  * May fail if called from a nested
  * statement.

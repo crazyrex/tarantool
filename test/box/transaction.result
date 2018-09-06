@@ -12,6 +12,24 @@ test_run:cmd("setopt delimiter ';'")
 box.begin() box.commit();
 ---
 ...
+-- gh-3518 no active transaction - false
+box.is_in_txn();
+---
+- - false
+...
+-- start transaction
+box.begin();
+---
+...
+-- active transaction - true
+box.is_in_txn();
+---
+- - true
+...
+-- close transaction
+box.commit();
+---
+...
 -- double begin
 box.begin() box.begin();
 ---

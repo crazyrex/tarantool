@@ -136,6 +136,7 @@ luaT_state
 luaT_tolstring
 box_txn
 box_txn_begin
+box_is_in_txn
 box_txn_commit
 box_txn_savepoint
 box_txn_rollback

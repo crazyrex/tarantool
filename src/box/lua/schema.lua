@@ -68,6 +68,8 @@ ffi.cdef[[
     box_txn_id();
     int
     box_txn_begin();
+    bool
+    box_is_in_txn();
     /** \endcond public */
     typedef struct txn_savepoint box_txn_savepoint_t;
 
@@ -319,6 +321,10 @@ box.begin = function()
     if builtin.box_txn_begin() == -1 then
         box.error()
     end
+end
+
+box.is_in_txn = function()
+    return { builtin.box_is_in_txn() }
 end
 
 box.savepoint = function()

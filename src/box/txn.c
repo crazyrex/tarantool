@@ -447,6 +447,12 @@ box_txn_begin()
 	return 0;
 }
 
+bool
+box_is_in_txn()
+{
+	return box_txn();
+}
+
 int
 box_txn_commit()
 {

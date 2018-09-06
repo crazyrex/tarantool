@@ -3,6 +3,14 @@ test_run = env.new()
 test_run:cmd("setopt delimiter ';'")
 -- empty transaction - ok
 box.begin() box.commit();
+-- gh-3518 no active transaction - false
+box.is_in_txn();
+-- start transaction
+box.begin();
+-- active transaction - true
+box.is_in_txn();
+-- close transaction
+box.commit();
 -- double begin
 box.begin() box.begin();
 -- no active transaction since exception rolled it back
