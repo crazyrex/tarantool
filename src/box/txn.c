@@ -150,6 +150,9 @@ txn_begin(bool is_autocommit)
 	txn->engine = NULL;
 	txn->engine_tx = NULL;
 	txn->psql_txn = NULL;
+	txn->generated_ids.size = 0;
+	txn->generated_ids.capacity = 0;
+	txn->generated_ids.array = NULL;
 	/* fiber_on_yield/fiber_on_stop initialized by engine on demand */
 	fiber_set_txn(fiber(), txn);
 	return txn;
@@ -353,6 +356,9 @@ txn_commit(struct txn *txn)
 	stailq_foreach_entry(stmt, &txn->stmts, next)
 		txn_stmt_unref_tuples(stmt);
 
+	assert(txn->generated_ids.array == NULL ||
+	       txn->generated_ids.capacity > 0);
+	free(txn->generated_ids.array);
 	TRASH(txn);
 	/** Free volatile txn memory. */
 	fiber_gc();
@@ -395,6 +401,9 @@ txn_rollback()
 	stailq_foreach_entry(stmt, &txn->stmts, next)
 		txn_stmt_unref_tuples(stmt);
 
+	assert(txn->generated_ids.array == NULL ||
+	       txn->generated_ids.capacity > 0);
+	free(txn->generated_ids.array);
 	TRASH(txn);
 	/** Free volatile txn memory. */
 	fiber_gc();

@@ -168,6 +168,12 @@ struct txn {
 	 /** Commit and rollback triggers */
 	struct rlist on_commit, on_rollback;
 	struct sql_txn *psql_txn;
+	/** Array of generated IDs. */
+	struct {
+		int64_t size;
+		int64_t capacity;
+		int64_t *array;
+	} generated_ids;
 };
 
 /* Pointer to the current transaction (if any) */
